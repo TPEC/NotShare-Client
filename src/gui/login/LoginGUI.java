@@ -27,6 +27,13 @@ public class LoginGUI  extends JFrame {
     TClientProcessor tcp=TClientProcessor.getInstance();
 
     private LoginGUI(){
+        SubstanceLookAndFeel.setSkin(new MySkin());
+        SubstanceLookAndFeel.setCurrentTheme(new org.jvnet.substance.theme.SubstanceSepiaTheme());
+        SubstanceLookAndFeel.setCurrentBorderPainter(new org.jvnet.substance.border.FlatBorderPainter());
+        SubstanceLookAndFeel.setCurrentButtonShaper(new org.jvnet.substance.button.StandardButtonShaper());
+        //SubstanceLookAndFeel.setCurrentGradientPainter(new org.jvnet.substance.painter.SimplisticGradientPainter());
+        SubstanceLookAndFeel.setCurrentTitlePainter(new org.jvnet.substance.title.FlatTitlePainter());
+
         panel = new JPanel();
         titleLogin = new JLabel("登录");
         userLabel = new JLabel("用户名");
@@ -149,6 +156,15 @@ public class LoginGUI  extends JFrame {
                             JOptionPane.WARNING_MESSAGE);
                     userName.setText("");
                     password.setText("");
+                }
+                break;
+            case 1://error
+                switch (Integer.valueOf(args[1])){
+                    case 0:
+                        JOptionPane.showMessageDialog(jframe, "无法连接至服务器！请确保服务端已打开。", "ERROR",
+                                JOptionPane.ERROR_MESSAGE);
+                        System.exit(0);
+                        break;
                 }
                 break;
         }

@@ -198,6 +198,12 @@ public class RegisterGUI {
     }
 
     private RegisterGUI(){
+        SubstanceLookAndFeel.setSkin(new MySkin());
+        SubstanceLookAndFeel.setCurrentTheme(new org.jvnet.substance.theme.SubstanceSepiaTheme());
+        SubstanceLookAndFeel.setCurrentBorderPainter(new org.jvnet.substance.border.FlatBorderPainter());
+        SubstanceLookAndFeel.setCurrentButtonShaper(new org.jvnet.substance.button.StandardButtonShaper());
+        //SubstanceLookAndFeel.setCurrentGradientPainter(new org.jvnet.substance.painter.SimplisticGradientPainter());
+        SubstanceLookAndFeel.setCurrentTitlePainter(new org.jvnet.substance.title.FlatTitlePainter());
         showRegister();
         frame.setVisible(false);
     }

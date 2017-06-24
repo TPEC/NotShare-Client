@@ -25,6 +25,7 @@ public class TClientProcessor implements Runnable{
             is=s.getInputStream();//服务器传来
         } catch (IOException e) {
             e.printStackTrace();
+            LoginGUI.getInstance().CMD(new String[]{"1","0"});
         }
         t=new Thread(this);
         flag=true;
