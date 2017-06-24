@@ -15,7 +15,7 @@ public class TClientProcessor implements Runnable{
     InputStream is=null;
     FileOutputStream fos=null;
 
-    public TClientProcessor(String host,int port){
+    public void init(String host,int port){
         try {
             s=new Socket(host, port);
             os=s.getOutputStream();//传给服务器
@@ -220,5 +220,15 @@ public class TClientProcessor implements Runnable{
                 e.printStackTrace();
             }
         }
+    }
+
+    private static final TClientProcessor TCP=new TClientProcessor();
+
+    private TClientProcessor(){
+
+    }
+
+    public static TClientProcessor getInstance(){
+        return TCP;
     }
 }

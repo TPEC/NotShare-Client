@@ -2,6 +2,8 @@ package gui.login;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+
+import network.TClientProcessor;
 import  org.jvnet.substance.SubstanceLookAndFeel;
 import org.jvnet.substance.utils.SubstanceConstants;
 import  org.jvnet.substance.watermark.*;
@@ -50,6 +52,7 @@ public class LoginGUI  extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    g
                     if ((userName.getText().equals("admin"))&&(password.getText().equals("admin"))){
                         MainGUI w = new MainGUI();//父窗口
                         w.f.setVisible(true);

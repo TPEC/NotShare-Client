@@ -5,7 +5,7 @@ import network.TClientProcessor;
  */
 public class Main {
     public static void main(String[] args){
-        TClientProcessor tcp=new TClientProcessor("127.0.0.1g",13244);
+        TClientProcessor.getInstance().init("127.0.0.1g",13244);
         gui.login.LoginGUI w = new gui.login.LoginGUI();//父窗口
         w.jframe.setVisible(true);
     }
