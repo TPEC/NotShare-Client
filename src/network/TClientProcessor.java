@@ -64,8 +64,25 @@ public class TClientProcessor implements Runnable{
         send(str.getBytes(),BUFFER_SIZE);
     }
 
-    public void getInformation(int id){
-        String str="GII0";//获取id的information
+    public void getUserInformation(int userID){//获取userID的信息
+        String str="GUI0";//获取id的information
+        str+=String.valueOf(userID);
+        for(int i=str.length();i<BUFFER_SIZE;i++)
+            str+='0';
+        send(str.getBytes(),BUFFER_SIZE);
+    }
+
+    public void getDocInformation(int docID){//获取docID的信息
+        String str="GDI0";//获取id的information
+        str+=String.valueOf(docID);
+        for(int i=str.length();i<BUFFER_SIZE;i++)
+            str+='0';
+        send(str.getBytes(),BUFFER_SIZE);
+    }
+
+    public void getNoteInformation(int noteID){//获取noteID的信息
+        String str="GNI0";//获取id的information
+        str+=String.valueOf(noteID);
         for(int i=str.length();i<BUFFER_SIZE;i++)
             str+='0';
         send(str.getBytes(),BUFFER_SIZE);
@@ -82,8 +99,9 @@ public class TClientProcessor implements Runnable{
         send(str.getBytes(),BUFFER_SIZE);
     }
 
-    public long sendFile(String path){//put
-        String str="PUT0";
+    public long sendFile(String path, int type, int docid){//put, type:1-doc, 2-note; 如为doc, docid=-1
+        String str="PUT";
+        str+=String.valueOf(type);
         long fs=0;
         try {
             File file = new File(path);
@@ -92,8 +110,12 @@ public class TClientProcessor implements Runnable{
                 for (int i = str.length(); i < 255; i++)
                     str += '0';
                 str += file.getName();
-                for (int i = str.length(); i < BUFFER_SIZE; i++)
+                for (int i = str.length(); i < 500; i++)
                     str += '0';
+                if(type==2)
+                    str+=String.valueOf(docid);
+                for(int i=str.length();i<BUFFER_SIZE;i++)
+                    str+='0';
                 send(str.getBytes(), BUFFER_SIZE);
                 FileInputStream fis=new FileInputStream(file);
                 byte[] buf = new byte[BUFFER_SIZE];
@@ -148,12 +170,22 @@ public class TClientProcessor implements Runnable{
         send(str.getBytes(), BUFFER_SIZE);
     }
 
-    public void shareAll(){
-
+    public void shareAll(int ID, int type){//type:1-doc, 2-note
+        String str="SHA";
+        str+=String.valueOf(type);
+        str+=String.valueOf(ID);
+        for(int i=str.length();i<BUFFER_SIZE;i++)
+            str+='0';
+        send(str.getBytes(), BUFFER_SIZE);
     }
 
-    public void shareFollowing(){
-
+    public void shareFollowing(int ID, int type){
+        String str="SHF";
+        str+=String.valueOf(type);
+        str+=String.valueOf(ID);
+        for(int i=str.length();i<BUFFER_SIZE;i++)
+            str+='0';
+        send(str.getBytes(), BUFFER_SIZE);
     }
 
     public void run() {
@@ -203,8 +235,11 @@ public class TClientProcessor implements Runnable{
                                     fsize = Integer.valueOf(fs);
                                 }
                                 break;
-                            case "GII":
-
+                            case "GUI":
+                                break;
+                            case "GDI":
+                                break;
+                            case "GNI":
                                 break;
                         }
                     }else {
