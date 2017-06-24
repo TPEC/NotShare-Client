@@ -1,3 +1,4 @@
+import gui.login.LoginGUI;
 import network.TClientProcessor;
 
 /**
@@ -6,7 +7,7 @@ import network.TClientProcessor;
 public class Main {
     public static void main(String[] args){
         TClientProcessor.getInstance().init("127.0.0.1g",13244);
-        gui.login.LoginGUI w = new gui.login.LoginGUI();//父窗口
+        LoginGUI w = LoginGUI.getInstance();//父窗口
         w.jframe.setVisible(true);
     }
 }

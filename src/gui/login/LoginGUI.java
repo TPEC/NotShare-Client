@@ -2,12 +2,16 @@ package gui.login;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.InputStream;
 
+import com.sun.org.apache.regexp.internal.RE;
+import gui.register.RegisterGUI;
 import network.TClientProcessor;
 import  org.jvnet.substance.SubstanceLookAndFeel;
 import org.jvnet.substance.utils.SubstanceConstants;
 import  org.jvnet.substance.watermark.*;
 import gui.MainWindow.MainGUI;
+import sun.rmi.runtime.Log;
 
 /**
  * Created by michelle on 2017/6/21.
@@ -18,10 +22,11 @@ public class LoginGUI  extends JFrame {
     JLabel titleLogin, userLabel, pwdLabel;
     JTextField userName;
     JPasswordField password;
-    JButton loginButton, cancelButton;
+    JButton loginButton, cancelButton,registerButton;
     Font font=new Font("黑体",Font.BOLD,36);
+    TClientProcessor tcp=TClientProcessor.getInstance();
 
-    public LoginGUI(){
+    private LoginGUI(){
         panel = new JPanel();
         titleLogin = new JLabel("登录");
         userLabel = new JLabel("用户名");
@@ -30,8 +35,10 @@ public class LoginGUI  extends JFrame {
         password = new JPasswordField();
         loginButton = new JButton();
         cancelButton = new JButton();
+        registerButton=new JButton();
 
         showLogin();
+        jframe.setVisible(false);
     }
     public void showLogin() {
 
@@ -46,24 +53,24 @@ public class LoginGUI  extends JFrame {
         userName.setBounds(185, 100, 200, 25);
         password.setBounds(185, 140, 200, 25);
 
+        registerButton.setText("注册");
+        registerButton.setBounds(30, 251, 80, 30);
+        registerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                RegisterGUI.getInstance().frame.setVisible(true);
+                jframe.setVisible(false);
+            }
+        });
+
         loginButton.setText("登录");
         loginButton.setBounds(160, 251, 80, 30);
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    g
-                    if ((userName.getText().equals("admin"))&&(password.getText().equals("admin"))){
-                        MainGUI w = new MainGUI();//父窗口
-                        w.f.setVisible(true);
-                        //new MainGUI().setVisible(true);
-                        jframe.setVisible(false);
-                    }else {
-                        JOptionPane.showMessageDialog(jframe, "用户名或密码错误", "请重新输入",
-                                JOptionPane.WARNING_MESSAGE);
-                        userName.setText("");
-                        password.setText("");
-                    }
+                    tcp.signIn(userName.getText(),password.getText());
+
                 }catch(Exception e2){
                     System.out.println(e2);
                 }
@@ -84,6 +91,7 @@ public class LoginGUI  extends JFrame {
         panel.add(password);
         panel.add(loginButton);
         panel.add(cancelButton);
+        panel.add(registerButton);
 
         panel.setOpaque(false);
 
@@ -126,6 +134,30 @@ public class LoginGUI  extends JFrame {
             }
         });
 
+    }
+
+    public void CMD(String[] args){
+        switch (Integer.valueOf(args[0])){
+            case 0://login
+                if (args[1].equals("s")){
+                    MainGUI w = new MainGUI();//父窗口
+                    w.f.setVisible(true);
+                    //new MainGUI().setVisible(true);
+                    jframe.setVisible(false);
+                }else {
+                    JOptionPane.showMessageDialog(jframe, "用户名或密码错误", "请重新输入",
+                            JOptionPane.WARNING_MESSAGE);
+                    userName.setText("");
+                    password.setText("");
+                }
+                break;
+        }
+    }
+
+    private static final LoginGUI loginGUI=new LoginGUI();
+
+    public static LoginGUI getInstance(){
+        return loginGUI;
     }
 }
 

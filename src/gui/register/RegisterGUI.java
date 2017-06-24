@@ -2,19 +2,30 @@ package gui.register;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.Font;
+import java.sql.ResultSet;
+
 import gui.MainWindow.MainGUI;
 import gui.login.LoginGUI;
 
+import network.TClientProcessor;
 import  org.jvnet.substance.SubstanceLookAndFeel;
 
 import org.jvnet.substance.fonts.DefaultGnomeFontPolicy;
 import org.jvnet.substance.utils.SubstanceConstants;
 import  org.jvnet.substance.watermark.*;
+import org.omg.CORBA.TCKind;
+
 /**
  * Created by michelle on 2017/6/22.
  */
 public class RegisterGUI {
-    JFrame frame;
+    public JFrame frame;
+    TClientProcessor tcp= TClientProcessor.getInstance();
+    JTextField userName;
+    JTextField emailAddr;
+    JPasswordField password;
+    JPasswordField pwdConfirm;
+    JButton registerButton,loginButton, cancelButton;
 
     public void showRegister() {
         JPanel panel;
@@ -23,13 +34,6 @@ public class RegisterGUI {
         panel.setBounds(0, 0, 600, 400);
 
         JLabel titleLogin, userLabel, pwdLabel1, pwdLabel2, emailLabel;
-        JTextField userName;
-        JTextField emailAddr;
-        JPasswordField password;
-        JPasswordField pwdConfirm;
-        JButton registerButton,loginButton, cancelButton;
-
-
 
         titleLogin = new JLabel("注册");
         titleLogin.setBounds(panel.getSize().width / 2 - 40, 20, 300, 40);
@@ -64,11 +68,12 @@ public class RegisterGUI {
                 try {
                     if (!password.getText().equals("")) {
                         if (password.getText().equals(pwdConfirm.getText())) {
+                            tcp.register(userName.getText(),password.getText());
                             //应该这里将用户注册信息写入数据库。
                             //待添加
-                            MainGUI w = new MainGUI();//父窗口
-                            w.f.setVisible(true);
-                            frame.setVisible(false);
+//                            MainGUI w = new MainGUI();//父窗口
+//                            w.f.setVisible(true);
+//                            frame.setVisible(false);
                         } else {
                             JOptionPane.showMessageDialog(frame, "两次密码不一致", "请重新输入",
                                     JOptionPane.WARNING_MESSAGE);
@@ -97,7 +102,7 @@ public class RegisterGUI {
                     login.jframe.setVisible(true);
                     frame.setVisible(false);
                     */
-                    gui.login.LoginGUI w = new gui.login.LoginGUI();//父窗口
+                    gui.login.LoginGUI w = LoginGUI.getInstance();//父窗口
                     w.jframe.setVisible(true);
                     //new MainGUI().setVisible(true);
                     frame.setVisible(false);
@@ -171,5 +176,35 @@ public class RegisterGUI {
             }
         });
 
+    }
+
+    public void CMD(String[] args){
+        switch (Integer.valueOf(args[0])){
+            case 0://register
+                if (args[1].equals("s")){
+                    JOptionPane.showMessageDialog(frame, "注册成功！", "注册",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    LoginGUI.getInstance().jframe.setVisible(true);
+                    frame.setVisible(false);
+                }else {
+                    JOptionPane.showMessageDialog(frame, "注册失败！", "注册",
+                            JOptionPane.WARNING_MESSAGE);
+                    userName.setText("");
+                    password.setText("");
+                    pwdConfirm.setText("");
+                }
+                break;
+        }
+    }
+
+    private RegisterGUI(){
+        showRegister();
+        frame.setVisible(false);
+    }
+
+    private static final RegisterGUI registerGUI=new RegisterGUI();
+
+    public static RegisterGUI getInstance(){
+        return registerGUI;
     }
 }

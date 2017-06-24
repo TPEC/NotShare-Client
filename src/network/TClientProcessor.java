@@ -1,6 +1,9 @@
 package network; /**
  * Created by Irene on 2017/6/23.
  */
+import gui.login.LoginGUI;
+import gui.register.RegisterGUI;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -167,16 +170,16 @@ public class TClientProcessor implements Runnable{
                     if(fileFlag==false) {
                         switch (a) {
                             case "RGS"://注册成功
-
+                                RegisterGUI.getInstance().CMD(new String[]{"0","s"});
                                 break;
                             case "RGF"://注册失败
-
+                                RegisterGUI.getInstance().CMD(new String[]{"0","f"});
                                 break;
                             case "SIS"://登录成功
-
+                                LoginGUI.getInstance().CMD(new String[]{"0","s"});
                                 break;
                             case "SIF"://登录失败
-
+                                LoginGUI.getInstance().CMD(new String[]{"0","f"});
                                 break;
                             case "GET"://客户端的接受
                                 if (fos == null) {
