@@ -15,9 +15,9 @@ public class TClientProcessor implements Runnable{
     InputStream is=null;
     FileOutputStream fos=null;
 
-    public TClientProcessor(){
+    public TClientProcessor(String host,int port){
         try {
-            s=new Socket("127.0.0.1", 12345);
+            s=new Socket(host, port);
             os=s.getOutputStream();//传给服务器
             is=s.getInputStream();//服务器传来
         } catch (IOException e) {
