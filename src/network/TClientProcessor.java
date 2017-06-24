@@ -200,7 +200,9 @@ public class TClientProcessor implements Runnable{
                                     fsize = Integer.valueOf(fs);
                                 }
                                 break;
+                            case "GII":
 
+                                break;
                         }
                     }else {
                         if(writeLength<fsize){
